@@ -1,1 +1,15 @@
-config.local.js
+# Dependencias
+**/node_modules/
+
+# Variables de entorno y credenciales locales
+**/.env
+**/.env.*
+!**/.env.example
+**/config.local.js
+credentials*.json
+*.pem
+*.key
+
+# Archivos generados por Node.js
+*.log
+coverage/
