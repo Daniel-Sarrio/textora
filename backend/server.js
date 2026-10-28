@@ -1,5 +1,9 @@
 const express = require("express");
 const productsRouter = require("./src/routes/products.routes");
+const {
+  createDatabasePool,
+  checkDatabaseConnection,
+} = require("./src/config/database");
 
 const DEFAULT_PORT = 3000;
 const DEFAULT_ORIGIN = "http://localhost:5500";
@@ -107,32 +111,54 @@ function createApp(env = process.env) {
 }
 
 function validateEnvironment(env) {
-  const missing = ["ES_TELA_CLIENT", "ES_TELA_API_KEY"].filter(
-    (name) => !env[name]?.trim(),
-  );
+  const requiredVariables = [
+    "ES_TELA_CLIENT",
+    "ES_TELA_API_KEY",
+    "DB_HOST",
+    "DB_PORT",
+    "DB_NAME",
+    "DB_USER",
+    "DB_PASSWORD",
+  ];
+  const missing = requiredVariables.filter((name) => !env[name]?.trim());
 
   if (missing.length > 0) {
     throw new Error(`Faltan variables de entorno: ${missing.join(", ")}`);
   }
 }
 
-function startServer(env = process.env) {
+async function startServer(env = process.env, dependencies = {}) {
   validateEnvironment(env);
   const port = parsePositiveInteger(env.PORT, DEFAULT_PORT, 65_535);
-  const app = createApp(env);
+  const databasePool = dependencies.databasePool || createDatabasePool(env);
 
-  return app.listen(port, () => {
+  try {
+    await checkDatabaseConnection(databasePool, env.DB_NAME);
+  } catch (error) {
+    await databasePool.end().catch(() => {});
+    throw error;
+  }
+
+  const app = createApp(env);
+  app.locals.database = databasePool;
+
+  const server = app.listen(port, () => {
     console.log(`TEXORA backend disponible en http://localhost:${port}`);
+    console.log("PostgreSQL conectado correctamente");
   });
+
+  server.on("close", () => {
+    databasePool.end().catch(() => {});
+  });
+
+  return server;
 }
 
 if (require.main === module) {
-  try {
-    startServer();
-  } catch (error) {
+  startServer().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
-  }
+  });
 }
 
 module.exports = { createApp, startServer, validateEnvironment };
