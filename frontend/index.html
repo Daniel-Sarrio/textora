@@ -9,24 +9,29 @@
 <body>
 
     <header class="cabecera">
-        <h1>TEXORA</h1>
+        <div class="cabecera-contenido">
+            <a class="logo" href="./">TEXORA</a>
 
-        <div id="zona-sesion">
-            <!-- Usuario identificado -->
-            <p id="usuario-activo" hidden>
-                Hola, <strong id="nombre-usuario"></strong>
-                <button type="button" id="boton-logout">Cerrar sesión</button>
-            </p>
-            <!-- Sin sesión -->
-            <p id="usuario-anonimo">
-                <button type="button" id="boton-mostrar-login">Iniciar sesión</button>
-                <button type="button" id="boton-mostrar-registro">Registrarse</button>
-            </p>
+            <div class="zona-sesion">
+                <!-- Usuario identificado -->
+                <div id="usuario-activo" class="acciones" hidden>
+                    <span class="saludo">Hola, <strong id="nombre-usuario"></strong></span>
+                    <button type="button" id="boton-logout" class="boton boton-borde">Cerrar sesión</button>
+                </div>
+                <!-- Sin sesión -->
+                <div id="usuario-anonimo" class="acciones">
+                    <button type="button" id="boton-mostrar-login" class="boton boton-borde">Iniciar sesión</button>
+                    <button type="button" id="boton-mostrar-registro" class="boton">Registrarse</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main>
-        <p>Catálogo textil con productos de ES-TELA</p>
+    <main class="contenido">
+        <section class="portada">
+            <h1>Tejidos con carácter</h1>
+            <p>Catálogo textil con productos de ES-TELA</p>
+        </section>
 
         <section id="seccion-auth" hidden>
             <form id="form-login" novalidate>
@@ -38,7 +43,7 @@
                     <input type="password" name="password" autocomplete="current-password" required>
                 </label>
                 <p class="error" role="alert"></p>
-                <button type="submit">Entrar</button>
+                <button type="submit" class="boton boton-ancho">Entrar</button>
             </form>
 
             <form id="form-registro" novalidate hidden>
@@ -56,11 +61,11 @@
                     <input type="password" name="password2" autocomplete="new-password" required>
                 </label>
                 <p class="error" role="alert"></p>
-                <button type="submit">Registrarme</button>
+                <button type="submit" class="boton boton-ancho">Registrarme</button>
             </form>
         </section>
 
-        <h2>Productos disponibles</h2>
+        <h2 class="titulo-seccion">Productos disponibles</h2>
 
         <pre id="productos">Cargando productos...</pre>
     </main>

@@ -1,48 +1,202 @@
-body {
-    font-family: system-ui, sans-serif;
-    margin: 0 auto;
-    max-width: 900px;
-    padding: 1rem;
+:root {
+    --negro: #111;
+    --gris-oscuro: #444;
+    --gris: #767676;
+    --gris-claro: #e5e5e5;
+    --gris-fondo: #f7f7f7;
+    --blanco: #fff;
 }
 
-.cabecera {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+* {
+    box-sizing: border-box;
 }
 
 [hidden] {
     display: none !important;
 }
 
-#seccion-auth form {
-    display: grid;
+body {
+    background: var(--blanco);
+    color: var(--negro);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Cabecera */
+.cabecera {
+    background: var(--blanco);
+    border-bottom: 1px solid var(--gris-claro);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.cabecera-contenido {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 1rem 1.5rem;
+}
+
+.logo {
+    color: var(--negro);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-decoration: none;
+}
+
+.acciones {
+    align-items: center;
+    display: flex;
     gap: 0.75rem;
-    max-width: 360px;
+}
+
+.saludo {
+    color: var(--gris-oscuro);
+    font-size: 0.95rem;
+}
+
+/* Botones */
+.boton {
+    background: var(--negro);
+    border: 1px solid var(--negro);
+    border-radius: 4px;
+    color: var(--blanco);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.boton:hover:not(:disabled) {
+    background: var(--gris-oscuro);
+    border-color: var(--gris-oscuro);
+}
+
+.boton:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+
+.boton-borde {
+    background: var(--blanco);
+    color: var(--negro);
+}
+
+.boton-borde:hover:not(:disabled) {
+    background: var(--negro);
+    border-color: var(--negro);
+    color: var(--blanco);
+}
+
+.boton-ancho {
+    width: 100%;
+}
+
+/* Contenido */
+.contenido {
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 0 1.5rem 3rem;
+}
+
+.portada {
+    padding: 3.5rem 0 2.5rem;
+    text-align: center;
+}
+
+.portada h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+}
+
+.portada p {
+    color: var(--gris);
+    margin: 0;
+}
+
+.titulo-seccion {
+    border-bottom: 1px solid var(--gris-claro);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+/* Formularios */
+#seccion-auth {
+    margin-bottom: 2rem;
+}
+
+#seccion-auth form {
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-claro);
+    border-radius: 8px;
+    display: grid;
+    gap: 1rem;
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+#seccion-auth h2 {
+    font-size: 1.3rem;
+    margin: 0;
 }
 
 label {
+    color: var(--gris-oscuro);
     display: grid;
-    gap: 0.25rem;
+    font-size: 0.9rem;
+    gap: 0.35rem;
 }
 
 input {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    border-radius: 4px;
+    color: var(--negro);
     font: inherit;
-    padding: 0.4rem;
+    padding: 0.6rem 0.75rem;
 }
 
-button {
-    cursor: pointer;
-    font: inherit;
-    padding: 0.4rem 0.8rem;
+input:focus {
+    border-color: var(--negro);
+    outline: 2px solid var(--negro);
+    outline-offset: 1px;
 }
 
 .error {
-    color: #b00020;
+    color: var(--negro);
+    font-size: 0.9rem;
+    font-weight: 600;
     margin: 0;
-    min-height: 1.2em;
+    min-height: 1.3em;
 }
 
+/* Productos (provisional hasta tener el catálogo) */
 pre {
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-claro);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    max-height: 420px;
     overflow: auto;
+    padding: 1rem;
+}
+
+@media (max-width: 520px) {
+    .cabecera-contenido {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+    }
 }
