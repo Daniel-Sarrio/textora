@@ -2,17 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TEXORA</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <h1>TEXORA</h1>
-    <h2>Productos de ES-TELA</h2>
+    <header class="cabecera">
+        <h1>TEXORA</h1>
 
-    <pre id="productos">Cargando productos...</pre>
+        <div id="zona-sesion">
+            <!-- Usuario identificado -->
+            <p id="usuario-activo" hidden>
+                Hola, <strong id="nombre-usuario"></strong>
+                <button type="button" id="boton-logout">Cerrar sesión</button>
+            </p>
+            <!-- Sin sesión -->
+            <p id="usuario-anonimo">
+                <button type="button" id="boton-mostrar-login">Iniciar sesión</button>
+                <button type="button" id="boton-mostrar-registro">Registrarse</button>
+            </p>
+        </div>
+    </header>
 
-    <script src="config.local.js"></script>
+    <main>
+        <p>Catálogo textil con productos de ES-TELA</p>
+
+        <section id="seccion-auth" hidden>
+            <form id="form-login" novalidate>
+                <h2>Iniciar sesión</h2>
+                <label>Email
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+                <label>Contraseña
+                    <input type="password" name="password" autocomplete="current-password" required>
+                </label>
+                <p class="error" role="alert"></p>
+                <button type="submit">Entrar</button>
+            </form>
+
+            <form id="form-registro" novalidate hidden>
+                <h2>Crear cuenta</h2>
+                <label>Nombre
+                    <input type="text" name="name" autocomplete="name" minlength="2" maxlength="100" required>
+                </label>
+                <label>Email
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+                <label>Contraseña (mínimo 8 caracteres)
+                    <input type="password" name="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+                </label>
+                <label>Repite la contraseña
+                    <input type="password" name="password2" autocomplete="new-password" required>
+                </label>
+                <p class="error" role="alert"></p>
+                <button type="submit">Registrarme</button>
+            </form>
+        </section>
+
+        <h2>Productos disponibles</h2>
+
+        <pre id="productos">Cargando productos...</pre>
+    </main>
+
     <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
 
 </body>
 </html>

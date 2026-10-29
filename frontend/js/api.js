@@ -1,40 +1,29 @@
-// Función para obtener los productos de la API
+// El frontend se sirve con Live Server (puerto 5500) y el backend escucha en el 3000.
+const API_URL = "http://localhost:3000/api";
+
 async function obtenerProductos() {
-
-    const url = new URL("https://www.es-tela.com/api/");
-
-    url.searchParams.set("r", "es/productosEnSubfamilia/F04S351");
-    url.searchParams.set("cli", window.TEXORA_CONFIG.cliente);
-    url.searchParams.set("apikey", window.TEXORA_CONFIG.apiKey);
-
     try {
-
-        // Petición a la API
-        const respuesta = await fetch(url);
+        const respuesta = await fetch(
+            `${API_URL}/subfamilias/F04S351/productos`
+        );
 
         if (!respuesta.ok) {
-            throw new Error("Error HTTP: " + respuesta.status);
+            throw new Error("Error al obtener productos");
         }
 
-        // Convertimos la respuesta a JSON
         const productos = await respuesta.json();
 
-        // Mostramos los productos por consola
         console.log(productos);
 
-        // Mostramos el JSON en la página
         document.getElementById("productos").textContent =
             JSON.stringify(productos, null, 2);
 
     } catch (error) {
+        console.error(error);
 
-    console.error("Error al obtener productos:", error);
-
-    document.getElementById("productos").textContent =
-        "Error: " + error.message;
-
-}
+        document.getElementById("productos").textContent =
+            "No se han podido cargar los productos";
+    }
 }
 
-// Ejecutamos la función
 obtenerProductos();
