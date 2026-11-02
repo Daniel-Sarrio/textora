@@ -1,6 +1,7 @@
 {
-  "liveServer.settings.root": "/frontend",
-  "liveServer.settings.host": "127.0.0.1",
-  "liveServer.settings.port": 5500,
-  "liveServer.settings.NoBrowser": false
+  "go-live.root": "./frontend",
+  "go-live.port": 5500,
+  "go-live.spa": false,
+  "go-live.proxy": "",
+  "go-live.openBrowser": true
 }

@@ -65,9 +65,13 @@
             </form>
         </section>
 
-        <h2 class="titulo-seccion">Productos disponibles</h2>
-
-        <pre id="productos">Cargando productos...</pre>
+        <section class="seccion-productos" aria-labelledby="titulo-productos">
+            <h2 id="titulo-productos" class="titulo-seccion">Productos disponibles</h2>
+            <p id="estado-productos" class="estado-productos" role="status">
+                Cargando productos...
+            </p>
+            <div id="productos" class="catalogo-productos"></div>
+        </section>
     </main>
 
     <script src="js/api.js"></script>
