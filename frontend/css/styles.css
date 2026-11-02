@@ -187,6 +187,38 @@ input:focus {
     margin-top: 2rem;
 }
 
+.selectores-catalogo {
+    background: var(--gris-fondo);
+    border: 1px solid var(--gris-claro);
+    border-radius: 8px;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 1rem;
+}
+
+.selectores-catalogo select {
+    background: var(--blanco);
+    border: 1px solid var(--gris-claro);
+    border-radius: 4px;
+    color: var(--negro);
+    font: inherit;
+    min-width: 0;
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+}
+
+.selectores-catalogo select:focus {
+    border-color: var(--negro);
+    outline: 2px solid var(--negro);
+    outline-offset: 1px;
+}
+
+.selectores-catalogo select:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
 .estado-productos {
     color: var(--gris);
     padding: 2rem 0;
@@ -245,6 +277,10 @@ input:focus {
     }
 
     .catalogo-productos {
+        grid-template-columns: 1fr;
+    }
+
+    .selectores-catalogo {
         grid-template-columns: 1fr;
     }
 }

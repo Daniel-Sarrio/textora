@@ -29,7 +29,7 @@
 
     <main class="contenido">
         <section class="portada">
-            <h1>Tejidos con carácter</h1>
+            <h1>Tejidos de la Vall</h1>
             <p>Catálogo textil con productos de ES-TELA</p>
         </section>
 
@@ -66,15 +66,32 @@
         </section>
 
         <section class="seccion-productos" aria-labelledby="titulo-productos">
+            <div class="selectores-catalogo">
+                <label for="selector-familia">
+                    Familia
+                    <select id="selector-familia" disabled>
+                        <option value="">Cargando familias...</option>
+                    </select>
+                </label>
+
+                <label for="selector-subfamilia">
+                    Subfamilia
+                    <select id="selector-subfamilia" disabled>
+                        <option value="">Selecciona primero una familia</option>
+                    </select>
+                </label>
+            </div>
+
             <h2 id="titulo-productos" class="titulo-seccion">Productos disponibles</h2>
             <p id="estado-productos" class="estado-productos" role="status">
-                Cargando productos...
+                Cargando familias...
             </p>
             <div id="productos" class="catalogo-productos"></div>
         </section>
     </main>
 
     <script src="js/api.js"></script>
+    <script src="js/catalogo.js"></script>
     <script src="js/auth.js"></script>
 
 </body>
