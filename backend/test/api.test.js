@@ -1,15 +1,25 @@
 const assert = require("node:assert/strict");
 const { after, before, beforeEach, test } = require("node:test");
 const { createApp } = require("../server");
+const { COOKIE_NAME } = require("../src/middleware/auth.middleware");
+const { createSession, destroySession } = require("../src/services/session.service");
 
 let server;
 let baseUrl;
 let requestedUrl;
+let sessionId;
 
 const originalFetch = global.fetch;
 const originalClient = process.env.ES_TELA_CLIENT;
 const originalApiKey = process.env.ES_TELA_API_KEY;
-const request = (...args) => originalFetch(...args);
+const request = (url, options = {}) =>
+  originalFetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      Cookie: `${COOKIE_NAME}=${sessionId}`,
+    },
+  });
 
 before(async () => {
   process.env.ES_TELA_CLIENT = "test-client";
@@ -22,6 +32,7 @@ before(async () => {
 
   await new Promise((resolve) => server.once("listening", resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}`;
+  sessionId = createSession(1);
 });
 
 beforeEach(() => {
@@ -50,6 +61,8 @@ after(async () => {
   if (originalApiKey === undefined) delete process.env.ES_TELA_API_KEY;
   else process.env.ES_TELA_API_KEY = originalApiKey;
 
+  destroySession(sessionId);
+
   await new Promise((resolve, reject) =>
     server.close((error) => (error ? reject(error) : resolve())),
   );
@@ -60,6 +73,14 @@ test("expone el estado de salud sin datos internos", async () => {
 
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), { status: "ok" });
+});
+
+test("protege el catálogo cuando no hay sesión", async () => {
+  const response = await originalFetch(`${baseUrl}/api/familias`);
+
+  assert.equal(response.status, 401);
+  assert.deepEqual(await response.json(), { error: "Debes iniciar sesión" });
+  assert.equal(requestedUrl, undefined);
 });
 
 const endpointCases = [

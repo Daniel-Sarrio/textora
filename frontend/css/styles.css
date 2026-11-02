@@ -132,8 +132,15 @@ body {
 }
 
 /* Formularios */
+.contenido-auth {
+    display: grid;
+    min-height: calc(100vh - 73px);
+    place-items: center;
+}
+
 #seccion-auth {
-    margin-bottom: 2rem;
+    padding: 2rem 0;
+    width: 100%;
 }
 
 #seccion-auth form {
@@ -147,9 +154,21 @@ body {
     padding: 2rem;
 }
 
-#seccion-auth h2 {
+#seccion-auth h1 {
     font-size: 1.3rem;
     margin: 0;
+}
+
+.enlace-auth {
+    color: var(--gris);
+    font-size: 0.9rem;
+    margin: 0;
+    text-align: center;
+}
+
+.enlace-auth a {
+    color: var(--negro);
+    font-weight: 600;
 }
 
 label {

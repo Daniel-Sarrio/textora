@@ -2,7 +2,9 @@
 const API_URL = "http://localhost:3000/api";
 
 async function obtenerFamilias() {
-    const respuesta = await fetch(`${API_URL}/familias`);
+    const respuesta = await fetch(`${API_URL}/familias`, {
+        credentials: "include",
+    });
 
     if (!respuesta.ok) {
         throw new Error("Error al obtener las familias");
@@ -13,7 +15,8 @@ async function obtenerFamilias() {
 
 async function obtenerProductosPorSubfamilia(idSubfamilia) {
     const respuesta = await fetch(
-        `${API_URL}/subfamilias/${encodeURIComponent(idSubfamilia)}/productos`
+        `${API_URL}/subfamilias/${encodeURIComponent(idSubfamilia)}/productos`,
+        { credentials: "include" }
     );
 
     if (!respuesta.ok) {

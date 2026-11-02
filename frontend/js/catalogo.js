@@ -82,6 +82,12 @@ async function cargarProductos() {
 }
 
 async function iniciarCatalogo() {
+    const tieneAcceso = await comprobarAccesoCatalogo();
+
+    if (!tieneAcceso) {
+        return;
+    }
+
     try {
         const datos = await obtenerFamilias();
         familias = convertirFamiliasEnArray(datos);

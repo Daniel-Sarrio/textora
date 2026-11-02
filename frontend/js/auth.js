@@ -2,15 +2,13 @@
 // La sesión va en una cookie HttpOnly: aquí no se guarda ningún token.
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const seccionAuth = document.getElementById("seccion-auth");
 const formLogin = document.getElementById("form-login");
 const formRegistro = document.getElementById("form-registro");
-const usuarioActivo = document.getElementById("usuario-activo");
-const usuarioAnonimo = document.getElementById("usuario-anonimo");
+const botonLogout = document.getElementById("boton-logout");
 
 async function peticionAuth(ruta, opciones = {}) {
     const respuesta = await fetch(`${API_URL}/auth/${ruta}`, {
-        credentials: "include", // envía y recibe la cookie de sesión
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         ...opciones,
     });
@@ -21,24 +19,6 @@ async function peticionAuth(ruta, opciones = {}) {
     }
 
     return datos;
-}
-
-function mostrarUsuario(usuario) {
-    const identificado = Boolean(usuario);
-
-    // textContent evita inyectar HTML con el nombre del usuario.
-    document.getElementById("nombre-usuario").textContent = usuario ? usuario.name : "";
-    usuarioActivo.hidden = !identificado;
-    usuarioAnonimo.hidden = identificado;
-    seccionAuth.hidden = true;
-}
-
-function mostrarFormulario(form) {
-    seccionAuth.hidden = false;
-    formLogin.hidden = form !== formLogin;
-    formRegistro.hidden = form !== formRegistro;
-    form.querySelector(".error").textContent = "";
-    form.querySelector("input").focus();
 }
 
 function validarLogin({ email, password }) {
@@ -55,9 +35,9 @@ function validarRegistro({ name, email, password, password2 }) {
     return null;
 }
 
-// Gestiona el envío de un formulario: valida, llama a la API y muestra errores.
+// Gestiona los dos formularios sin duplicar la lógica.
 function manejarFormulario(form, ruta, validar) {
-    form.addEventListener("submit", async (evento) => {
+    form.addEventListener("submit", async function (evento) {
         evento.preventDefault();
 
         const mensaje = form.querySelector(".error");
@@ -77,7 +57,7 @@ function manejarFormulario(form, ruta, validar) {
         mensaje.textContent = "";
 
         try {
-            const { user } = await peticionAuth(ruta, {
+            await peticionAuth(ruta, {
                 method: "POST",
                 body: JSON.stringify({
                     name: campos.name,
@@ -87,7 +67,7 @@ function manejarFormulario(form, ruta, validar) {
             });
 
             form.reset();
-            mostrarUsuario(user);
+            window.location.replace("catalogo.html");
         } catch (error) {
             mensaje.textContent = error.message === "Failed to fetch"
                 ? "No se pudo conectar con el servidor"
@@ -99,31 +79,50 @@ function manejarFormulario(form, ruta, validar) {
 }
 
 async function cerrarSesion() {
+    botonLogout.disabled = true;
+
     try {
         await peticionAuth("logout", { method: "POST" });
+        window.location.replace("index.html");
     } catch (error) {
-        console.error(error);
+        console.error("No se ha podido cerrar la sesión", error);
+        botonLogout.disabled = false;
     }
-
-    mostrarUsuario(null);
 }
 
-// Al cargar la página, comprueba si ya hay una sesión activa.
-async function comprobarSesion() {
+// Solo muestra el catálogo después de comprobar la sesión.
+async function comprobarAccesoCatalogo() {
     try {
         const { user } = await peticionAuth("me");
-        mostrarUsuario(user);
+        document.getElementById("nombre-usuario").textContent = user.name;
+        document.body.hidden = false;
+        return true;
     } catch (error) {
-        mostrarUsuario(null);
+        window.location.replace("index.html");
+        return false;
     }
 }
 
-document.getElementById("boton-mostrar-login")
-    .addEventListener("click", () => mostrarFormulario(formLogin));
-document.getElementById("boton-mostrar-registro")
-    .addEventListener("click", () => mostrarFormulario(formRegistro));
-document.getElementById("boton-logout").addEventListener("click", cerrarSesion);
+// Si ya hay sesión, no tiene sentido volver al login o al registro.
+async function redirigirUsuarioAutenticado() {
+    try {
+        await peticionAuth("me");
+        window.location.replace("catalogo.html");
+    } catch (error) {
+        // Sin sesión: permanece en la página de autenticación.
+    }
+}
 
-manejarFormulario(formLogin, "login", validarLogin);
-manejarFormulario(formRegistro, "register", validarRegistro);
-comprobarSesion();
+if (formLogin) {
+    manejarFormulario(formLogin, "login", validarLogin);
+    redirigirUsuarioAutenticado();
+}
+
+if (formRegistro) {
+    manejarFormulario(formRegistro, "register", validarRegistro);
+    redirigirUsuarioAutenticado();
+}
+
+if (botonLogout) {
+    botonLogout.addEventListener("click", cerrarSesion);
+}

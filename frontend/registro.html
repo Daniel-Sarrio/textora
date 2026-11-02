@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TEXORA - Registro</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="cabecera">
+        <div class="cabecera-contenido">
+            <a class="logo" href="./">TEXORA</a>
+        </div>
+    </header>
+
+    <main class="contenido contenido-auth">
+        <section id="seccion-auth">
+            <form id="form-registro" novalidate>
+                <h1>Crear cuenta</h1>
+
+                <label>Nombre
+                    <input type="text" name="name" autocomplete="name" minlength="2" maxlength="100" required>
+                </label>
+
+                <label>Email
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+
+                <label>Contraseña (mínimo 8 caracteres)
+                    <input type="password" name="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+                </label>
+
+                <label>Repite la contraseña
+                    <input type="password" name="password2" autocomplete="new-password" required>
+                </label>
+
+                <p class="error" role="alert"></p>
+                <button type="submit" class="boton boton-ancho">Registrarme</button>
+
+                <p class="enlace-auth">
+                    ¿Ya tienes cuenta? <a href="index.html">Inicia sesión</a>
+                </p>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>
