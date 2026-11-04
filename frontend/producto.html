@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TEXORA - Detalle de producto</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body hidden>
+
+    <header class="cabecera">
+        <div class="cabecera-contenido">
+            <a class="logo" href="catalogo.html">TEXORA</a>
+
+            <div class="acciones">
+                <span class="saludo">Bienvenido, <strong id="nombre-usuario"></strong></span>
+                <button type="button" id="boton-logout" class="boton boton-borde">Cerrar sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenido contenido-detalle">
+        <button type="button" id="boton-volver" class="volver-catalogo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+            Volver al catálogo
+        </button>
+
+        <p id="estado-detalle" class="estado-productos" role="status">
+            Cargando producto...
+        </p>
+
+        <article id="detalle-producto" class="detalle-producto" hidden>
+            <section class="galeria-producto" aria-label="Imágenes del producto">
+                <div class="imagen-principal-contenedor">
+                    <img id="imagen-principal" class="imagen-detalle" alt="">
+                    <p id="sin-imagen" class="sin-imagen" hidden>Imagen no disponible</p>
+                </div>
+                <div id="miniaturas-producto" class="miniaturas-producto"></div>
+            </section>
+
+            <section class="informacion-detalle">
+                <p id="categoria-producto" class="categoria-producto"></p>
+                <h1 id="nombre-producto"></h1>
+                <p id="referencia-detalle" class="referencia-producto"></p>
+                <div id="descripcion-producto" class="descripcion-producto"></div>
+
+                <dl id="datos-producto" class="datos-producto"></dl>
+
+                <section id="variantes-producto" class="variantes-producto" aria-labelledby="titulo-variantes">
+                    <h2 id="titulo-variantes">Elige una variante</h2>
+
+                    <div class="selectores-variantes">
+                        <label id="grupo-talla" for="selector-talla">
+                            Talla
+                            <select id="selector-talla" disabled>
+                                <option value="">Selecciona una talla</option>
+                            </select>
+                        </label>
+
+                        <label id="grupo-color" for="selector-color">
+                            Color
+                            <select id="selector-color" disabled>
+                                <option value="">Selecciona un color</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <p id="estado-variante" class="estado-variante" role="status">
+                        Selecciona una variante para consultar su disponibilidad
+                    </p>
+
+                    <div id="datos-articulo" class="datos-articulo" hidden>
+                        <p id="precio-articulo" class="precio-articulo"></p>
+                        <p id="stock-articulo" class="stock-articulo"></p>
+                        <p id="referencia-articulo" class="referencia-articulo"></p>
+                    </div>
+                </section>
+            </section>
+        </article>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/producto.js"></script>
+
+</body>
+</html>

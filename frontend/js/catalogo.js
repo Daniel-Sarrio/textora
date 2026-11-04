@@ -75,10 +75,40 @@ async function cargarProductos() {
     try {
         const productos = await obtenerProductosPorSubfamilia(idSubfamilia);
         mostrarProductos(productos);
+        activarEnlacesProductos(productos);
     } catch (error) {
         console.error("No se han podido cargar los productos", error);
         mostrarEstadoProductos("No se han podido cargar los productos");
     }
+}
+
+function abrirDetalleProducto(producto) {
+    // Se conserva la imagen del listado como alternativa si el detalle no trae galería.
+    sessionStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+    window.location.href = `producto.html?id=${encodeURIComponent(producto.refProducto)}`;
+}
+
+function activarEnlacesProductos(productos) {
+    const tarjetas = document.querySelectorAll(".tarjeta-producto");
+
+    tarjetas.forEach(function (tarjeta, indice) {
+        const producto = productos[indice];
+
+        tarjeta.tabIndex = 0;
+        tarjeta.setAttribute("role", "link");
+        tarjeta.setAttribute("aria-label", `Ver ${producto.descripcion}`);
+
+        tarjeta.addEventListener("click", function () {
+            abrirDetalleProducto(producto);
+        });
+
+        tarjeta.addEventListener("keydown", function (evento) {
+            if (evento.key === "Enter" || evento.key === " ") {
+                evento.preventDefault();
+                abrirDetalleProducto(producto);
+            }
+        });
+    });
 }
 
 async function iniciarCatalogo() {
@@ -99,7 +129,7 @@ async function iniciarCatalogo() {
         }
 
         mostrarFamilias();
-        mostrarEstadoProductos("Selecciona una familia y una subfamilia");
+        restaurarSeleccionCatalogo();
     } catch (error) {
         console.error("No se han podido cargar las familias", error);
         selectorFamilia.innerHTML = '<option value="">Error al cargar familias</option>';
@@ -107,7 +137,40 @@ async function iniciarCatalogo() {
     }
 }
 
-selectorFamilia.addEventListener("change", actualizarSubfamilias);
-selectorSubfamilia.addEventListener("change", cargarProductos);
+function restaurarSeleccionCatalogo() {
+    const familiaGuardada = sessionStorage.getItem("familiaCatalogo");
+    const subfamiliaGuardada = sessionStorage.getItem("subfamiliaCatalogo");
+    const existeFamilia = Array.from(selectorFamilia.options).some(function (opcion) {
+        return opcion.value === familiaGuardada;
+    });
+
+    if (!existeFamilia) {
+        mostrarEstadoProductos("Selecciona una familia y una subfamilia");
+        return;
+    }
+
+    selectorFamilia.value = familiaGuardada;
+    actualizarSubfamilias();
+
+    const existeSubfamilia = Array.from(selectorSubfamilia.options).some(function (opcion) {
+        return opcion.value === subfamiliaGuardada;
+    });
+
+    if (existeSubfamilia) {
+        selectorSubfamilia.value = subfamiliaGuardada;
+        cargarProductos();
+    }
+}
+
+selectorFamilia.addEventListener("change", function () {
+    sessionStorage.setItem("familiaCatalogo", selectorFamilia.value);
+    sessionStorage.removeItem("subfamiliaCatalogo");
+    actualizarSubfamilias();
+});
+
+selectorSubfamilia.addEventListener("change", function () {
+    sessionStorage.setItem("subfamiliaCatalogo", selectorSubfamilia.value);
+    cargarProductos();
+});
 
 iniciarCatalogo();
