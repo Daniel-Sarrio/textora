@@ -1,10 +1,17 @@
 :root {
-    --negro: #111;
-    --gris-oscuro: #444;
-    --gris: #767676;
-    --gris-claro: #e5e5e5;
-    --gris-fondo: #f7f7f7;
+    --negro: #18211d;
+    --gris-oscuro: #46504b;
+    --gris: #707a75;
+    --gris-claro: #dfe5e1;
+    --gris-fondo: #f4f6f4;
     --blanco: #fff;
+    --fondo: #fbfaf7;
+    --acento: #3f6657;
+    --acento-oscuro: #2c4b3f;
+    --acento-claro: #e7efeb;
+    --arena: #eee7da;
+    --error: #9d3f3f;
+    --sombra-suave: 0 10px 30px rgb(24 33 29 / 8%);
 }
 
 * {
@@ -16,17 +23,20 @@
 }
 
 body {
-    background: var(--blanco);
+    background: var(--fondo);
     color: var(--negro);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     line-height: 1.5;
     margin: 0;
+    min-height: 100vh;
 }
 
 /* Cabecera */
 .cabecera {
-    background: var(--blanco);
+    backdrop-filter: blur(10px);
+    background: rgb(255 255 255 / 92%);
     border-bottom: 1px solid var(--gris-claro);
+    box-shadow: 0 4px 18px rgb(24 33 29 / 4%);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -42,11 +52,17 @@ body {
 }
 
 .logo {
-    color: var(--negro);
+    color: var(--acento-oscuro);
     font-size: 1.4rem;
     font-weight: 700;
     letter-spacing: 0.25em;
     text-decoration: none;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.logo:hover {
+    color: var(--acento);
+    transform: translateY(-1px);
 }
 
 .acciones {
@@ -60,22 +76,42 @@ body {
     font-size: 0.95rem;
 }
 
+.saludo strong {
+    color: var(--acento-oscuro);
+}
+
 /* Botones */
 .boton {
-    background: var(--negro);
-    border: 1px solid var(--negro);
-    border-radius: 4px;
+    background: var(--acento);
+    border: 1px solid var(--acento);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgb(63 102 87 / 15%);
     color: var(--blanco);
     cursor: pointer;
     font: inherit;
+    font-weight: 600;
     font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    transition: background 0.15s, color 0.15s;
+    padding: 0.65rem 1.1rem;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .boton:hover:not(:disabled) {
-    background: var(--gris-oscuro);
-    border-color: var(--gris-oscuro);
+    background: var(--acento-oscuro);
+    border-color: var(--acento-oscuro);
+    box-shadow: 0 7px 18px rgb(44 75 63 / 22%);
+    transform: translateY(-2px);
+}
+
+.boton:active:not(:disabled) {
+    box-shadow: 0 2px 6px rgb(44 75 63 / 18%);
+    transform: translateY(0);
+}
+
+.boton:focus-visible,
+.logo:focus-visible,
+.enlace-auth a:focus-visible {
+    outline: 3px solid rgb(63 102 87 / 28%);
+    outline-offset: 3px;
 }
 
 .boton:disabled {
@@ -85,12 +121,14 @@ body {
 
 .boton-borde {
     background: var(--blanco);
-    color: var(--negro);
+    border-color: var(--acento);
+    box-shadow: none;
+    color: var(--acento-oscuro);
 }
 
 .boton-borde:hover:not(:disabled) {
-    background: var(--negro);
-    border-color: var(--negro);
+    background: var(--acento);
+    border-color: var(--acento);
     color: var(--blanco);
 }
 
@@ -106,8 +144,25 @@ body {
 }
 
 .portada {
-    padding: 3.5rem 0 2.5rem;
+    background: linear-gradient(135deg, var(--acento-claro), #f4efe5);
+    border: 1px solid rgb(63 102 87 / 10%);
+    border-radius: 18px;
+    margin-top: 2rem;
+    overflow: hidden;
+    padding: 3.75rem 1.5rem;
+    position: relative;
     text-align: center;
+}
+
+.portada::after {
+    background: rgb(255 255 255 / 42%);
+    border-radius: 50%;
+    content: "";
+    height: 180px;
+    position: absolute;
+    right: -55px;
+    top: -90px;
+    width: 180px;
 }
 
 .portada h1 {
@@ -115,6 +170,8 @@ body {
     font-weight: 700;
     letter-spacing: -0.02em;
     margin: 0 0 0.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .portada p {
@@ -123,7 +180,9 @@ body {
 }
 
 .titulo-seccion {
+    align-items: center;
     border-bottom: 1px solid var(--gris-claro);
+    display: flex;
     font-size: 1.1rem;
     letter-spacing: 0.08em;
     margin: 2rem 0 1rem;
@@ -131,8 +190,20 @@ body {
     text-transform: uppercase;
 }
 
+.titulo-seccion::before {
+    background: var(--acento);
+    border-radius: 999px;
+    content: "";
+    height: 1.3rem;
+    margin-right: 0.65rem;
+    width: 4px;
+}
+
 /* Formularios */
 .contenido-auth {
+    background:
+        radial-gradient(circle at 15% 20%, var(--acento-claro), transparent 30%),
+        radial-gradient(circle at 85% 80%, var(--arena), transparent 32%);
     display: grid;
     min-height: calc(100vh - 73px);
     place-items: center;
@@ -144,19 +215,23 @@ body {
 }
 
 #seccion-auth form {
-    background: var(--gris-fondo);
+    background: rgb(255 255 255 / 94%);
     border: 1px solid var(--gris-claro);
-    border-radius: 8px;
+    border-radius: 16px;
+    border-top: 4px solid var(--acento);
+    box-shadow: var(--sombra-suave);
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     margin: 0 auto;
-    max-width: 400px;
-    padding: 2rem;
+    max-width: 420px;
+    padding: 2.4rem;
 }
 
 #seccion-auth h1 {
-    font-size: 1.3rem;
-    margin: 0;
+    color: var(--acento-oscuro);
+    font-size: 1.65rem;
+    margin: 0 0 0.25rem;
+    text-align: center;
 }
 
 .enlace-auth {
@@ -167,34 +242,49 @@ body {
 }
 
 .enlace-auth a {
-    color: var(--negro);
+    color: var(--acento-oscuro);
     font-weight: 600;
+    text-decoration-color: rgb(63 102 87 / 40%);
+    text-underline-offset: 3px;
+    transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.enlace-auth a:hover {
+    color: var(--acento);
+    text-decoration-color: var(--acento);
 }
 
 label {
     color: var(--gris-oscuro);
     display: grid;
     font-size: 0.9rem;
-    gap: 0.35rem;
+    font-weight: 600;
+    gap: 0.45rem;
 }
 
 input {
     background: var(--blanco);
     border: 1px solid var(--gris-claro);
-    border-radius: 4px;
+    border-radius: 8px;
     color: var(--negro);
     font: inherit;
-    padding: 0.6rem 0.75rem;
+    padding: 0.75rem 0.85rem;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+input:hover {
+    border-color: #b8c4be;
 }
 
 input:focus {
-    border-color: var(--negro);
-    outline: 2px solid var(--negro);
-    outline-offset: 1px;
+    background: #fdfffe;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 4px rgb(63 102 87 / 12%);
+    outline: none;
 }
 
 .error {
-    color: var(--negro);
+    color: var(--error);
     font-size: 0.9rem;
     font-weight: 600;
     margin: 0;
@@ -207,30 +297,40 @@ input:focus {
 }
 
 .selectores-catalogo {
-    background: var(--gris-fondo);
+    background: var(--blanco);
     border: 1px solid var(--gris-claro);
-    border-radius: 8px;
+    border-left: 4px solid var(--acento);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgb(24 33 29 / 6%);
     display: grid;
-    gap: 1rem;
+    gap: 1.25rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 1rem;
+    padding: 1.25rem;
 }
 
 .selectores-catalogo select {
     background: var(--blanco);
     border: 1px solid var(--gris-claro);
-    border-radius: 4px;
+    border-radius: 8px;
     color: var(--negro);
+    cursor: pointer;
     font: inherit;
     min-width: 0;
-    padding: 0.6rem 0.75rem;
+    padding: 0.75rem 0.85rem;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     width: 100%;
 }
 
+.selectores-catalogo select:hover:not(:disabled) {
+    background: var(--acento-claro);
+    border-color: #a8bbb2;
+}
+
 .selectores-catalogo select:focus {
-    border-color: var(--negro);
-    outline: 2px solid var(--negro);
-    outline-offset: 1px;
+    background: var(--blanco);
+    border-color: var(--acento);
+    box-shadow: 0 0 0 4px rgb(63 102 87 / 12%);
+    outline: none;
 }
 
 .selectores-catalogo select:disabled {
@@ -239,8 +339,12 @@ input:focus {
 }
 
 .estado-productos {
-    color: var(--gris);
-    padding: 2rem 0;
+    background: var(--acento-claro);
+    border: 1px dashed #b7c9c0;
+    border-radius: 10px;
+    color: var(--acento-oscuro);
+    margin: 1.5rem 0 0;
+    padding: 1.2rem;
     text-align: center;
 }
 
@@ -251,16 +355,19 @@ input:focus {
 }
 
 .tarjeta-producto {
+    animation: aparecer-tarjeta 0.35s ease both;
     background: var(--blanco);
     border: 1px solid var(--gris-claro);
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgb(24 33 29 / 6%);
     overflow: hidden;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
 .tarjeta-producto:hover {
-    box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
-    transform: translateY(-2px);
+    border-color: #bdcbc5;
+    box-shadow: 0 14px 32px rgb(24 33 29 / 12%);
+    transform: translateY(-5px);
 }
 
 .imagen-producto {
@@ -268,7 +375,12 @@ input:focus {
     background: var(--gris-fondo);
     display: block;
     object-fit: cover;
+    transition: transform 0.35s ease;
     width: 100%;
+}
+
+.tarjeta-producto:hover .imagen-producto {
+    transform: scale(1.035);
 }
 
 .informacion-producto {
@@ -282,10 +394,26 @@ input:focus {
 }
 
 .referencia-producto {
-    color: var(--gris);
+    background: var(--gris-fondo);
+    border-radius: 999px;
+    color: var(--acento-oscuro);
+    display: inline-block;
     font-size: 0.85rem;
     letter-spacing: 0.04em;
     margin: 0;
+    padding: 0.2rem 0.55rem;
+}
+
+@keyframes aparecer-tarjeta {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 520px) {
@@ -295,11 +423,41 @@ input:focus {
         justify-content: center;
     }
 
+    .acciones {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .contenido {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #seccion-auth form {
+        padding: 1.6rem;
+    }
+
+    .portada {
+        margin-top: 1rem;
+        padding: 2.5rem 1rem;
+    }
+
     .catalogo-productos {
         grid-template-columns: 1fr;
     }
 
     .selectores-catalogo {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

@@ -1,5 +1,5 @@
-// El frontend se sirve con Live Server (puerto 5500) y el backend escucha en el 3000.
-const API_URL = "http://localhost:3000/api";
+// Usa el mismo host que Go Live para que la cookie de sesión sea válida.
+const API_URL = `${window.location.protocol}//${window.location.hostname}:3000/api`;
 
 async function obtenerFamilias() {
     const respuesta = await fetch(`${API_URL}/familias`, {
